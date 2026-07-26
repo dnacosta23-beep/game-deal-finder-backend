@@ -1,20 +1,17 @@
 from flask import Flask
 from flask_cors import CORS
 
+from routes.deals import deals_bp
+
 app = Flask(__name__)
 
 CORS(app)
 
+app.register_blueprint(deals_bp)
+
 
 @app.route("/")
 def home():
-    return {
-        "message": "Game Deal Finder API is running!"
-    }
-
-
-@app.route("/api")
-def api():
     return {
         "message": "Welcome to the Game Deal Finder API!"
     }
