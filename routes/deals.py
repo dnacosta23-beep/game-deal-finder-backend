@@ -1,7 +1,7 @@
 import requests
 from flask import Blueprint, request
 
-from services.cheapshark import search_deals
+from services.cheapshark import search_deals, get_stores
 
 
 deals_bp = Blueprint("deals", __name__)
@@ -18,6 +18,7 @@ def get_deals():
 
     try:
         deals = search_deals(game_title)
+        stores = get_stores()
 
         formatted_deals = []
 
@@ -27,7 +28,7 @@ def get_deals():
                 "sale_price": float(deal["salePrice"]),
                 "normal_price": float(deal["normalPrice"]),
                 "savings": round(float(deal["savings"])),
-                 "store": deal["storeID"],
+                "store": stores.get(deal["storeID"], "Unknown Store"),
                 "thumb": deal["thumb"],
                 "deal_url": (
                     "https://www.cheapshark.com/redirect"
