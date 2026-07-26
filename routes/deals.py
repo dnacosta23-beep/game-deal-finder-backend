@@ -18,11 +18,26 @@ def get_deals():
 
     try:
         deals = search_deals(game_title)
-        return deals
+
+        formatted_deals = []
+
+        for deal in deals:
+            formatted_deals.append({
+                "title": deal["title"],
+                "sale_price": float(deal["salePrice"]),
+                "normal_price": float(deal["normalPrice"]),
+                "savings": round(float(deal["savings"])),
+                 "store": deal["storeID"],
+                "thumb": deal["thumb"],
+                "deal_url": (
+                    "https://www.cheapshark.com/redirect"
+                    f"?dealID={deal['dealID']}"
+                ),
+            })
+
+        return formatted_deals
 
     except requests.RequestException as error:
-        print(error)
-
         return {
             "error": "Failed to fetch deals from CheapShark.",
             "details": str(error)
